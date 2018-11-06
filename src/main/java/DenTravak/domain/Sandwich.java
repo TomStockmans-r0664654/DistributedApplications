@@ -1,11 +1,12 @@
 package DenTravak.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sandwich {
 
     private String name;
-    private List<Ingredient> ingredients;
+    private List<Ingredient> ingredients = new ArrayList<Ingredient>();
     private double price;
 
     // @Convert(converter = JpaJsonConverter)
@@ -42,7 +43,7 @@ public class Sandwich {
     public static class SandwichBuilder{
 
         private String name;
-        private List<Ingredient> ingredients;
+        private List<Ingredient> ingredients = new ArrayList<Ingredient>();
         private double price;
 
         private SandwichBuilder(){}
