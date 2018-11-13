@@ -1,13 +1,27 @@
 package DenTravak.domain;
 
+import java.math.BigDecimal;
+import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+// https://spring.io/guides/gs/accessing-data-jpa/
+@Entity
 public class Sandwich {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private UUID id;
     private String name;
     private List<Ingredient> ingredients = new ArrayList<Ingredient>();
-    private double price;
+    private BigDecimal price;
 
     // @Convert(converter = JpaJsonConverter)
 
@@ -31,20 +45,19 @@ public class Sandwich {
         this.ingredients = ingredients;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    private void setPrice(double price) {
+    private void setPrice(BigDecimal price) {
         this.price = price;
     }
-
 
     public static class SandwichBuilder{
 
         private String name;
         private List<Ingredient> ingredients = new ArrayList<Ingredient>();
-        private double price;
+        private BigDecimal price;
 
         private SandwichBuilder(){}
 
@@ -69,8 +82,12 @@ public class Sandwich {
         }
 
 
-        public SandwichBuilder withPrice(double price) {
+        public SandwichBuilder withPrice(BigDecimal price) {
             this.price = price; return this;
+        }
+
+        public SandwichBuilder withPrice(double price) {
+            this.price = BigDecimal.valueOf(price); return this;
         }
 
         public Sandwich build(){
