@@ -44,7 +44,7 @@ public class Sandwich {
         return name;
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -52,7 +52,7 @@ public class Sandwich {
         return ingredients;
     }
 
-    private void setIngredients(String ingredients) {
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -60,7 +60,7 @@ public class Sandwich {
         return price;
     }
 
-    private void setPrice(BigDecimal price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

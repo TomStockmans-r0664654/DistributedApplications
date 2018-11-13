@@ -6,6 +6,7 @@ import DenTravak.domain.Order;
 import DenTravak.domain.Sandwich;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,27 +38,44 @@ public class SandwichController {
     }
 
     @RequestMapping(value="/sandwiches", method= RequestMethod.PUT)
-    public void updateSandwich(@RequestBody Sandwich s){
-        Sandwich sw = repository.findById(s.getId()).get();
-        sw.setName(s.getName());
+        public void updateSandwich(@RequestBody Sandwich s) {
+
+            Sandwich sand = repository.findById(s.getId()).get();
+            if (sand != null) {
+                sand.setIngredients(s.getIngredients());
+                sand.setName(s.getName());
+                sand.setPrice(s.getPrice());
+
+                repository.save(sand);
+            }
+        }
+
+        @RequestMapping(value="/sandwiches/{id}", method= RequestMethod.DELETE)
+        public void deleteSandwich(@PathVariable UUID id){
+
+        repository.deleteById(id);
+
+        }
+
+        @RequestMapping(value="/sandwiches/{id}", method= RequestMethod.GET)
+        public Sandwich getSandwich(@PathVariable UUID id){
+
+            return repository.findById(id).get();
+        }
 
 
 
-        repository.save(sw);
-
-    }
-
-    @RequestMapping(value="/order", method= RequestMethod.POST)
-    public Order order(@RequestParam(value="sandwichId") UUID sandwichId,
-                      @RequestParam(value="breadType") BreadType breadType,
-                      @RequestParam(value="MobilePhone") String mobilePhone){
-        Order o = anOrder()
-                .withBreadType(breadType)
-                .withSandwichId(sandwichId)
-                .withMobilePhone(mobilePhone)
-                .build();
-        //TODO save to DB
-        return o;
-    }
+        @RequestMapping(value="/order", method= RequestMethod.POST)
+        public Order order(@RequestParam(value="sandwichId") UUID sandwichId,
+                          @RequestParam(value="breadType") BreadType breadType,
+                          @RequestParam(value="MobilePhone") String mobilePhone){
+            Order o = anOrder()
+                    .withBreadType(breadType)
+                    .withSandwichId(sandwichId)
+                    .withMobilePhone(mobilePhone)
+                    .build();
+            //TODO save to DB
+            return o;
+        }
 
 }
