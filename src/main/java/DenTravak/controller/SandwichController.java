@@ -36,6 +36,17 @@ public class SandwichController {
         repository.save(s);
     }
 
+    @RequestMapping(value="/sandwiches", method= RequestMethod.PUT)
+    public void updateSandwich(@RequestBody Sandwich s){
+        Sandwich sw = repository.findById(s.getId()).get();
+        sw.setName(s.getName());
+
+
+
+        repository.save(sw);
+
+    }
+
     @RequestMapping(value="/order", method= RequestMethod.POST)
     public Order order(@RequestParam(value="sandwichId") UUID sandwichId,
                       @RequestParam(value="breadType") BreadType breadType,

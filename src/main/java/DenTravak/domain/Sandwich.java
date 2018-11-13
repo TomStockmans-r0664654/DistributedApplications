@@ -19,6 +19,15 @@ public class Sandwich {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     private String name;
     private String ingredients;
     private BigDecimal price;
