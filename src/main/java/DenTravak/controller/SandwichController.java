@@ -19,7 +19,7 @@ import static DenTravak.domain.Ingredient.IngredientBuilder.anIngredient;
 @RestController
 public class SandwichController {
 
-    private List<Sandwich> sandwiches = new ArrayList<Sandwich>();
+    //private List<Sandwich> sandwiches = new ArrayList<>();
 
     @RequestMapping("/sandwich")
     public Sandwich sandwich() {

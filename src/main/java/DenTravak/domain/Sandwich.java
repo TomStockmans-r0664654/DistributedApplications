@@ -13,7 +13,7 @@ import javax.persistence.Id;
 
 
 // https://spring.io/guides/gs/accessing-data-jpa/
-@Entity
+//@Entity
 public class Sandwich {
 
     @Id
