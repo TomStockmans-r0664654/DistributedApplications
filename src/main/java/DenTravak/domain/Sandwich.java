@@ -19,9 +19,6 @@ public class Sandwich {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
-    private String name;
-    private String ingredients;
-    private BigDecimal price;
 
     public UUID getId() {
         return id;
@@ -31,17 +28,23 @@ public class Sandwich {
         this.id = id;
     }
 
-    // @Convert(converter = JpaJsonConverter)
+    private String name;
+    private String ingredients;
+    private BigDecimal price;
+
+    // @Convert(converter = JpaJsonConverter) -> enkel nodig indien lijst of object
 
     public Sandwich(){
 
     }
 
+    // getter setter for uuid
+
     public String getName() {
         return name;
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -49,7 +52,7 @@ public class Sandwich {
         return ingredients;
     }
 
-    private void setIngredients(String ingredients) {
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -57,7 +60,7 @@ public class Sandwich {
         return price;
     }
 
-    private void setPrice(BigDecimal price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
