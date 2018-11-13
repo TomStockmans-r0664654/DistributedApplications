@@ -1,19 +1,18 @@
 package DenTravak.controller;
 
+import DenTravak.db.SandwichRepository;
 import DenTravak.domain.BreadType;
 import DenTravak.domain.Order;
 import DenTravak.domain.Sandwich;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 import static DenTravak.domain.Order.OrderBuilder.anOrder;
-import static DenTravak.domain.Sandwich.SandwichBuilder.aSandwich;
+
 import static DenTravak.domain.Ingredient.IngredientBuilder.anIngredient;
 
 @RestController
@@ -21,16 +20,20 @@ public class SandwichController {
 
     //private List<Sandwich> sandwiches = new ArrayList<Sandwich>();
 
-    @RequestMapping("/sandwich")
-    public ArrayList<Sandwich> sandwich() {
+
+    private SandwichRepository repository;
+    public SandwichController(SandwichRepository repository){
+        this.repository = repository;
+    }
+    @RequestMapping("/sandwiches")
+    public Iterable<Sandwich> sandwich() {
         // lijst van sandwiches
-        ArrayList<Sandwich> sandwiches = new ArrayList<Sandwich>();
-        sandwiches.add(aSandwich()
-                .withName("test")
-                .withIngredients("testingredienten")
-                .withPrice(2)
-                .build());
-        return sandwiches;
+        return repository.findAll();
+    }
+
+    @RequestMapping(value="/sandwiches", method= RequestMethod.POST)
+    public void createSandwich(@RequestBody Sandwich s){
+        repository.save(s);
     }
 
     @RequestMapping(value="/order", method= RequestMethod.POST)

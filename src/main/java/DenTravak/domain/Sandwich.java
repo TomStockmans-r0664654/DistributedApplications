@@ -13,7 +13,7 @@ import javax.persistence.Id;
 
 
 // https://spring.io/guides/gs/accessing-data-jpa/
-//@Entity
+@Entity
 public class Sandwich {
 
     @Id
@@ -23,11 +23,13 @@ public class Sandwich {
     private String ingredients;
     private BigDecimal price;
 
-    // @Convert(converter = JpaJsonConverter)
+    // @Convert(converter = JpaJsonConverter) -> enkel nodig indien lijst of object
 
     public Sandwich(){
 
     }
+
+    // getter setter for uuid
 
     public String getName() {
         return name;
