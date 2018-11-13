@@ -19,18 +19,18 @@ import static DenTravak.domain.Ingredient.IngredientBuilder.anIngredient;
 @RestController
 public class SandwichController {
 
-    private List<Sandwich> sandwiches = new ArrayList<Sandwich>();
+    //private List<Sandwich> sandwiches = new ArrayList<Sandwich>();
 
     @RequestMapping("/sandwich")
-    public Sandwich sandwich() {
+    public ArrayList<Sandwich> sandwich() {
         // lijst van sandwiches
-        Sandwich test = aSandwich()
+        ArrayList<Sandwich> sandwiches = new ArrayList<Sandwich>();
+        sandwiches.add(aSandwich()
                 .withName("test")
-                .withIngredient(anIngredient()
-                        .withName("test"))
+                .withIngredients("testingredienten")
                 .withPrice(2)
-                .build();
-        return test;
+                .build());
+        return sandwiches;
     }
 
     @RequestMapping(value="/order", method= RequestMethod.POST)

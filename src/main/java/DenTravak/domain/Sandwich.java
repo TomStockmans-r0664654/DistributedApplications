@@ -13,14 +13,14 @@ import javax.persistence.Id;
 
 
 // https://spring.io/guides/gs/accessing-data-jpa/
-@Entity
+//@Entity
 public class Sandwich {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
     private String name;
-    private List<Ingredient> ingredients = new ArrayList<Ingredient>();
+    private String ingredients;
     private BigDecimal price;
 
     // @Convert(converter = JpaJsonConverter)
@@ -37,11 +37,11 @@ public class Sandwich {
         this.name = name;
     }
 
-    public List<Ingredient> getIngredients() {
+    public String getIngredients() {
         return ingredients;
     }
 
-    private void setIngredients(List<Ingredient> ingredients) {
+    private void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -56,7 +56,7 @@ public class Sandwich {
     public static class SandwichBuilder{
 
         private String name;
-        private List<Ingredient> ingredients = new ArrayList<Ingredient>();
+        private String ingredients;
         private BigDecimal price;
 
         private SandwichBuilder(){}
@@ -69,18 +69,9 @@ public class Sandwich {
             this.name = name; return this;
         }
 
-        public SandwichBuilder withIngredients(List<Ingredient> ingredients) {
+        public SandwichBuilder withIngredients(String ingredients) {
             this.ingredients = ingredients; return this;
         }
-
-        public SandwichBuilder withIngredient(Ingredient ingredient){
-            this.ingredients.add(ingredient); return this;
-        }
-
-        public SandwichBuilder withIngredient(Ingredient.IngredientBuilder ingredientBuilder){
-            this.ingredients.add(ingredientBuilder.build()); return this;
-        }
-
 
         public SandwichBuilder withPrice(BigDecimal price) {
             this.price = price; return this;
