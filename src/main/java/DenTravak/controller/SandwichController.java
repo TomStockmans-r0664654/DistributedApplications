@@ -27,38 +27,50 @@ public class SandwichController {
     }
 
     @CrossOrigin(origins = "http://localhost:9000")
-    @RequestMapping("/sandwiches")
+    @RequestMapping("/sandwich")
     public Iterable<Sandwich> sandwich() {
         // lijst van sandwiches
         return repository.findAll();
     }
 
-    @RequestMapping(value="/sandwiches", method= RequestMethod.POST)
-    public void createSandwich(@RequestBody Sandwich s){
+    @RequestMapping(value="/sandwich", method= RequestMethod.POST)
+    public Sandwich createSandwich(@RequestBody Sandwich s){
         repository.save(s);
+        return s;
     }
 
-    @RequestMapping(value="/sandwiches", method= RequestMethod.PUT)
-        public void updateSandwich(@RequestBody Sandwich s) {
+    @RequestMapping(value="/sandwich/{id}", method= RequestMethod.PUT)
+        public Sandwich updateSandwich(@RequestBody Sandwich s, @PathVariable UUID id) {
 
-            Sandwich sand = repository.findById(s.getId()).get();
-            if (sand != null) {
-                sand.setIngredients(s.getIngredients());
-                sand.setName(s.getName());
-                sand.setPrice(s.getPrice());
+        if(!s.getId().equals(id)){
 
-                repository.save(sand);
+            System.out.println(s.getId());
+            System.out.println(id);
+            System.out.println("nok");
+            return null;}
+            Sandwich sand = repository.findById(id).get();
+
+            if(sand != null) {
+
+
+                    sand.setIngredients(s.getIngredients());
+                    sand.setName(s.getName());
+                    sand.setPrice(s.getPrice());
+
+                    repository.save(sand);
+
             }
+            return sand;
         }
 
-        @RequestMapping(value="/sandwiches/{id}", method= RequestMethod.DELETE)
+        @RequestMapping(value="/sandwich/{id}", method= RequestMethod.DELETE)
         public void deleteSandwich(@PathVariable UUID id){
 
         repository.deleteById(id);
 
         }
 
-        @RequestMapping(value="/sandwiches/{id}", method= RequestMethod.GET)
+        @RequestMapping(value="/sandwich/{id}", method= RequestMethod.GET)
         public Sandwich getSandwich(@PathVariable UUID id){
 
             return repository.findById(id).get();
