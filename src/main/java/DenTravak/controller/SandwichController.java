@@ -27,19 +27,19 @@ public class SandwichController {
     }
 
     @CrossOrigin(origins = "http://localhost:9000")
-    @RequestMapping("/sandwich")
+    @RequestMapping("/sandwiches")
     public Iterable<Sandwich> sandwich() {
         // lijst van sandwiches
         return repository.findAll();
     }
 
-    @RequestMapping(value="/sandwich", method= RequestMethod.POST)
+    @RequestMapping(value="/sandwiches", method= RequestMethod.POST)
     public Sandwich createSandwich(@RequestBody Sandwich s){
         repository.save(s);
         return s;
     }
 
-    @RequestMapping(value="/sandwich/{id}", method= RequestMethod.PUT)
+    @RequestMapping(value="/sandwiches/{id}", method= RequestMethod.PUT)
         public Sandwich updateSandwich(@RequestBody Sandwich s, @PathVariable UUID id) {
 
         if(!s.getId().equals(id)){
@@ -63,14 +63,14 @@ public class SandwichController {
             return sand;
         }
 
-        @RequestMapping(value="/sandwich/{id}", method= RequestMethod.DELETE)
+        @RequestMapping(value="/sandwiches/{id}", method= RequestMethod.DELETE)
         public void deleteSandwich(@PathVariable UUID id){
 
         repository.deleteById(id);
 
         }
 
-        @RequestMapping(value="/sandwich/{id}", method= RequestMethod.GET)
+        @RequestMapping(value="/sandwiches/{id}", method= RequestMethod.GET)
         public Sandwich getSandwich(@PathVariable UUID id){
 
             return repository.findById(id).get();
