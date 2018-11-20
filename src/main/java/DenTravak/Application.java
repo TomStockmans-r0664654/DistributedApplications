@@ -12,6 +12,8 @@ import static DenTravak.domain.Sandwich.SandwichBuilder.aSandwich;
 @SpringBootApplication
 public class Application {
 
+    private SandwichRepository repository;
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

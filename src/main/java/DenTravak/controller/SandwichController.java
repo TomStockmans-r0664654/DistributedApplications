@@ -21,11 +21,12 @@ public class SandwichController {
 
     //private List<Sandwich> sandwiches = new ArrayList<Sandwich>();
 
-
     private SandwichRepository repository;
     public SandwichController(SandwichRepository repository){
         this.repository = repository;
     }
+
+    @CrossOrigin(origins = "http://localhost:9000")
     @RequestMapping("/sandwiches")
     public Iterable<Sandwich> sandwich() {
         // lijst van sandwiches
