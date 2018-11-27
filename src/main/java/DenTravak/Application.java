@@ -28,10 +28,12 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner demo(SandwichRepository repository, OrderRepository orepository) {
+    public CommandLineRunner demo(SandwichRepository srepository, OrderRepository orepository) {
         return (args) -> {
             Sandwich s = aSandwich().withPrice(2).withName("test").withIngredients("testingr").build();
-            repository.save(s);
+            srepository.save(s);
+            //Order o = Order.OrderBuilder.anOrder().build();
+            //orepository.save(o);
         };
     }
 

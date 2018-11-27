@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name="SandwichOrder")
+@Table(name = "SandwichOrder")
 public class Order {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
