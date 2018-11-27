@@ -1,5 +1,7 @@
 package DenTravak.domain;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,14 +14,16 @@ public class Order {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private UUID id;
     private UUID sandwichId;
+
     private String name;
     private BreadType breadType;
     private LocalDateTime creationDate;
     private BigDecimal price;
     private String mobilePhoneNumber;
 
-    public Order (){}
-
+    public Order (){
+        creationDate = LocalDateTime.now();
+    }
 
     public String getName() {
         return name;

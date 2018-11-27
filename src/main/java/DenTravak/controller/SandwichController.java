@@ -26,7 +26,6 @@ public class SandwichController {
         this.orepository = orepository;
     }
 
-    @CrossOrigin(origins = "http://localhost:9000")
     @RequestMapping("/sandwiches")
     public Iterable<Sandwich> sandwich() {
         // lijst van sandwiches
@@ -74,8 +73,8 @@ public class SandwichController {
         return order;
     }
 
-    @RequestMapping(value = "/orders/{date}", method = RequestMethod.GET)
-    public Iterable<Order> getOrder(@PathVariable LocalDateTime date) {
+    @RequestMapping(value = "/orders", method = RequestMethod.GET)
+    public Iterable<Order> getOrder() {
         return orepository.findAll();
     }
 }
