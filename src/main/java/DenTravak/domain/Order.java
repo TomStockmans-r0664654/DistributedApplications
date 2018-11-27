@@ -1,14 +1,12 @@
 package DenTravak.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Table(name = "SandwichOrder")
 public class Order {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

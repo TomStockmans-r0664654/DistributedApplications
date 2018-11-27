@@ -74,8 +74,8 @@ public class SandwichController {
         return order;
     }
 
-    @RequestMapping(value = "/orders/{date}", method = RequestMethod.GET)
-    public Iterable<Order> getOrder(@PathVariable LocalDateTime date) {
+    @RequestMapping(value = "/orders", method = RequestMethod.GET)
+    public Iterable<Order> getOrder() {
         return orepository.findAll();
     }
 }

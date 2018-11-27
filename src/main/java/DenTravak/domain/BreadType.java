@@ -1,5 +1,5 @@
 package DenTravak.domain;
 
 public enum BreadType {
-    TURKISH_BREAD,WRAP,BOTTERHAMMEKES
+    TURKISH_BREAD,WRAP,BOTERHAMMEKES
 }
