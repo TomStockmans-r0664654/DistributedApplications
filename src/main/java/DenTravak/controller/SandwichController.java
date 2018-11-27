@@ -33,8 +33,8 @@ public class SandwichController {
         return repository.findAll();
     }
 
-    @RequestMapping(value = "/sandwiches", method = RequestMethod.POST)
-    public Sandwich createSandwich(@RequestBody Sandwich s) {
+    @RequestMapping(value="/sandwiches", method= RequestMethod.POST)
+    public Sandwich createSandwich(@RequestBody Sandwich s){
         repository.save(s);
         return s;
     }
