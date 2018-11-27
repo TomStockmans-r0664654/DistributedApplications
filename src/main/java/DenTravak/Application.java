@@ -1,6 +1,8 @@
 package DenTravak;
 
+import DenTravak.db.OrderRepository;
 import DenTravak.db.SandwichRepository;
+import DenTravak.domain.Order;
 import DenTravak.domain.Sandwich;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +14,8 @@ import static DenTravak.domain.Sandwich.SandwichBuilder.aSandwich;
 @SpringBootApplication
 public class Application {
 
-    private SandwichRepository repository;
+    private SandwichRepository srepository;
+    private OrderRepository orepository;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -22,7 +25,8 @@ public class Application {
     public CommandLineRunner demo(SandwichRepository repository) {
         return (args) -> {
             Sandwich s = aSandwich().withPrice(2).withName("test").withIngredients("testingr").build();
-            repository.save(s);
+            srepository.save(s);
+            Order o = Order.OrderBuilder.anOrder().
         };
     }
 
