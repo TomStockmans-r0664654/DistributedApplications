@@ -40,7 +40,7 @@ class DenTravakEditSandwich extends DenTravakAbstractElement {
                 body: JSON.stringify(this.sandwich)
             });
             const content = await rawResponse.json();
-            if (await rawResponse.ok()) {this.app().dispatchEvent(new CustomEvent('save-succeeded', { detail: this.sandwich }));}
+            if (await rawResponse.ok) {this.app().dispatchEvent(new CustomEvent('save-succeeded', { detail: content }));}
             else; //error
             
         })();
