@@ -1,10 +1,9 @@
-import DenTravakAbstractElement from './travak-abstract-element.js';
+import DenTravakAbstractElement from '../travak-abstract-element.js';
 
 class DenTravakSandwichesList extends DenTravakAbstractElement {
 
     connectedCallback() {
         super.connectedCallback();
-        //fetch('/api/sandwiches.json')
         fetch('http://localhost:8080/sandwiches')
             .then(resp => resp.json())
             .then(json => this.updateSandwichesList(json));
@@ -32,7 +31,7 @@ class DenTravakSandwichesList extends DenTravakAbstractElement {
                 <h4>Kies je broodje</h4>
                 <div>
                 <ul id="sandwiches" class="list-group">
-                    </ul>
+                </ul>
                 </div>
             </div>
         `;

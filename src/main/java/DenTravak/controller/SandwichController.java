@@ -77,4 +77,9 @@ public class SandwichController {
     public Iterable<Order> getOrder() {
         return orepository.findAll();
     }
+
+    @RequestMapping(value = "/breadtypes", method = RequestMethod.GET)
+    public BreadType[] getBreadTypes(){
+        return BreadType.values();
+    }
 }
