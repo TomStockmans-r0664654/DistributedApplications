@@ -7,9 +7,9 @@ buildscript {
     }
 }
 
-//plugins {
-//    id 'com.google.cloud.tools.jib' version '0.10.0'
-//}
+plugins {
+    id 'com.google.cloud.tools.jib' version '0.10.0'
+}
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -39,9 +39,9 @@ dependencies {
     testCompile ('net.javacrumbs.json-unit:json-unit-assertj:2.0.3')
 }
 
-//jib {
-//    to {
-//        image = "den-travak-app:0.0.1-SNAPSHOT"
-//    }
-//    allowInsecureRegistries = true
-//}
+jib {
+    to {
+        image = "den-travak-app:0.0.1-SNAPSHOT"
+    }
+    allowInsecureRegistries = true
+}
