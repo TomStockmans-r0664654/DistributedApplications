@@ -6,10 +6,17 @@ import DenTravak.domain.BreadType;
 import DenTravak.domain.Order;
 import DenTravak.domain.Sandwich;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.time.LocalDateTime;
 import java.util.UUID;
+import DenTravak.domain.SandwichPreferences;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+import javax.naming.ServiceUnavailableException;
+import java.net.URI;
+import java.util.Optional;
 
 import static DenTravak.domain.Order.OrderBuilder.anOrder;
 
@@ -17,19 +24,35 @@ import static DenTravak.domain.Order.OrderBuilder.anOrder;
 public class SandwichController {
 
     //private List<Sandwich> sandwiches = new ArrayList<Sandwich>();
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
+    @Autowired
     private SandwichRepository repository;
-    private OrderRepository orepository;
 
-    public SandwichController(SandwichRepository repository, OrderRepository orepository) {
-        this.repository = repository;
-        this.orepository = orepository;
-    }
+    @Autowired
+    private RestTemplate restTemplate;
+
+    //private OrderRepository orepository;
+
+//    public SandwichController(SandwichRepository repository, OrderRepository orepository) {
+//        this.repository = repository;
+//        this.orepository = orepository;
+//    }
+
 
     @RequestMapping("/sandwiches")
     public Iterable<Sandwich> sandwich() {
         // lijst van sandwiches
-        return repository.findAll();
+        //return repository.findAll();
+        try {
+            SandwichPreferences preferences = getPreferences("ronald.dehuysser@ucll.be");
+            //TODO: sort allSandwiches by float in preferences
+            Iterable<Sandwich> allSandwiches = repository.findAll();
+            return allSandwiches;
+        } catch (ServiceUnavailableException e) {
+            return repository.findAll();
+        }
     }
 
     @RequestMapping(value="/sandwiches", method= RequestMethod.POST)
@@ -66,20 +89,21 @@ public class SandwichController {
         return repository.findById(id).get();
     }
 
-
-    @RequestMapping(value = "/orders", method = RequestMethod.POST)
-    public Order order(@RequestBody Order order) {
-        orepository.save(order);
-        return order;
+    // why comment: for testing
+    @GetMapping("/getpreferences/{emailAddress}")
+    public SandwichPreferences getPreferences(@PathVariable String emailAddress) throws RestClientException, ServiceUnavailableException {
+        URI service = recommendationServiceUrl()
+                .map(s -> s.resolve("/recommend/" + emailAddress))
+                .orElseThrow(ServiceUnavailableException::new);
+        return restTemplate
+                .getForEntity(service, SandwichPreferences.class)
+                .getBody();
     }
 
-    @RequestMapping(value = "/orders", method = RequestMethod.GET)
-    public Iterable<Order> getOrder() {
-        return orepository.findAll();
-    }
-
-    @RequestMapping(value = "/breadtypes", method = RequestMethod.GET)
-    public BreadType[] getBreadTypes(){
-        return BreadType.values();
+    public Optional<URI> recommendationServiceUrl() {
+        return discoveryClient.getInstances("recommendation")
+                .stream()
+                .map(si -> si.getUri())
+                .findFirst();
     }
 }
