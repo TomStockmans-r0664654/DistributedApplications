@@ -2,19 +2,21 @@ package DenTravak.controller;
 
 import DenTravak.db.OrderRepository;
 import DenTravak.db.SandwichRepository;
-import DenTravak.domain.BreadType;
-import DenTravak.domain.Order;
-import DenTravak.domain.Sandwich;
+import DenTravak.domain.*;
+import com.google.common.collect.Lists;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import DenTravak.domain.SandwichPreferences;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import javax.naming.ServiceUnavailableException;
+import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.Optional;
 
@@ -98,6 +100,15 @@ public class SandwichController {
         return restTemplate
                 .getForEntity(service, SandwichPreferences.class)
                 .getBody();
+    }
+
+    @RequestMapping(value = "/csv", method = RequestMethod.GET)
+    public void getcsv(HttpServletResponse response) throws IOException {
+
+        CSVGenerator g = new CSVGenerator(Lists.newArrayList(orepository.findAll()),response);
+        g.GenerateCsv();
+
+
     }
 
     public Optional<URI> recommendationServiceUrl() {
