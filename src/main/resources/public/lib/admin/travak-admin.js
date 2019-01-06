@@ -39,6 +39,10 @@ class DenTravakAdminApp extends DenTravakAbstractElement {
         this.byCss(`travak-edit-sandwich`).classList.add('hidden');
     }
 
+    downloadTheCsv(){
+        window.location.assign("http://localhost:8080/csv");
+    }
+
     showEditSandwich(sandwich) {
         this.byCss(`travak-edit-sandwich`).init(sandwich);
         this.byCss(`travak-sandwiches-list`).classList.add('hidden');

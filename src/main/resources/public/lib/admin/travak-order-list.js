@@ -16,6 +16,8 @@ class DenTravakOrderList extends DenTravakAbstractElement {
 
     initEventListeners() {
         this.byId('edit-sandwiches-btn').addEventListener('click', (e) => this.app().showSandwichList());
+        this.byId('get-csv-btn').addEventListener('click', (e) => this.app().downloadTheCsv());
+
     }
 
     updateOrderList(orders) {
@@ -55,6 +57,7 @@ class DenTravakOrderList extends DenTravakAbstractElement {
                 <div class="travak-header">
                     <h4>Den Travak Bestellingen</h4>
                     <button id="edit-sandwiches-btn" type="button" class="btn btn-primary">Bewerk broodjeslijst</button>
+                    <button id="get-csv-btn" type="button" class="btn btn-primary">download bestellingen</button>
                 </div>
                 <div>
                 <ul id="orders" class="list-group">
