@@ -2,6 +2,7 @@ import DenTravakAbstractElement from '../travak-abstract-element.js';
 import './travak-sandwiches-list.js';
 import './travak-sandwiches-checkout.js';
 import './travak-sandwiches-order-confirmation.js';
+import './travak-sandwiches-login.js';
 
 class DenTravakApp extends DenTravakAbstractElement {
 
