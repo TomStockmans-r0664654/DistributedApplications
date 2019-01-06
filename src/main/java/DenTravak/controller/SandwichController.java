@@ -1,26 +1,18 @@
 package DenTravak.controller;
 
-import DenTravak.db.OrderRepository;
 import DenTravak.db.SandwichRepository;
 import DenTravak.domain.*;
-import com.google.common.collect.Lists;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import javax.naming.ServiceUnavailableException;
-import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.Optional;
-
-import static DenTravak.domain.Order.OrderBuilder.anOrder;
 
 @RestController
 public class SandwichController {
@@ -48,7 +40,7 @@ public class SandwichController {
         // lijst van sandwiches
         //return repository.findAll();
         try {
-            SandwichPreferences preferences = getPreferences("ronald.dehuysser@ucll.be");
+            Preferences preferences = getPreferences("ronald.dehuysser@ucll.be");
             //TODO: sort allSandwiches by float in preferences
             Iterable<Sandwich> allSandwiches = repository.findAll();
             return allSandwiches;
@@ -93,22 +85,13 @@ public class SandwichController {
 
     // why comment: for testing
     @GetMapping("/getpreferences/{emailAddress}")
-    public SandwichPreferences getPreferences(@PathVariable String emailAddress) throws RestClientException, ServiceUnavailableException {
+    public Preferences getPreferences(@PathVariable String emailAddress) throws RestClientException, ServiceUnavailableException {
         URI service = recommendationServiceUrl()
                 .map(s -> s.resolve("/recommend/" + emailAddress))
                 .orElseThrow(ServiceUnavailableException::new);
         return restTemplate
-                .getForEntity(service, SandwichPreferences.class)
+                .getForEntity(service, Preferences.class)
                 .getBody();
-    }
-
-    @RequestMapping(value = "/csv", method = RequestMethod.GET)
-    public void getcsv(HttpServletResponse response) throws IOException {
-
-        CSVGenerator g = new CSVGenerator(Lists.newArrayList(orepository.findAll()),response);
-        g.GenerateCsv();
-
-
     }
 
     public Optional<URI> recommendationServiceUrl() {
