@@ -36,7 +36,7 @@ class DenTravakSandwichesCheckout extends DenTravakAbstractElement {
             });
             const content = await rawResponse.json();
 
-            this.app().dispatchEvent(new CustomEvent('order-succeeded', {detail: this.sandwich}));
+            this.app().dispatchEvent(new CustomEvent('order-succeeded', {detail: content}));
         })();
     }
 
