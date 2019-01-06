@@ -13,19 +13,18 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-//import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 import static DenTravak.domain.Sandwich.SandwichBuilder.aSandwich;
-
+// REQUIRES CONSUL
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
-//@EnableDiscoveryClient
+// REQUIRES CONSUL
+@EnableDiscoveryClient
 public class Application {
 
-    //private SandwichRepository srepository;
-    //private OrderRepository orepository;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -34,18 +33,16 @@ public class Application {
     @Bean
     public CommandLineRunner demo(SandwichRepository srepository, OrderRepository orepository) {
         return (args) -> {
-            Sandwich s = aSandwich().withPrice(1).withName("test").withIngredients("testingr").build();
+            Sandwich s = aSandwich().withPrice(1).withName("test1").withIngredients("testingr").build();
             srepository.save(s);
-            s = aSandwich().withPrice(5).withName("test2").withIngredients("kaas").build();
-            srepository.save(s);
-            s = aSandwich().withPrice(4).withName("test2").withIngredients("kaas").build();
-            srepository.save(s);
-            s = aSandwich().withPrice(3).withName("test2").withIngredients("kaas").build();
+            s = aSandwich().withPrice(5).withName("test5").withIngredients("kaas").build();
             srepository.save(s);
             s = aSandwich().withPrice(2).withName("test2").withIngredients("kaas").build();
             srepository.save(s);
-            //Order o = Order.OrderBuilder.anOrder().build();
-            //orepository.save(o);
+            s = aSandwich().withPrice(4).withName("test4").withIngredients("kaas").build();
+            srepository.save(s);
+            s = aSandwich().withPrice(3).withName("test3").withIngredients("kaas").build();
+            srepository.save(s);
         };
     }
 

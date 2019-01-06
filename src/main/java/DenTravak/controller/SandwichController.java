@@ -8,18 +8,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import javax.naming.ServiceUnavailableException;
 import java.net.URI;
+// REQUIRES CONSUL
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 
 @RestController
 public class SandwichController {
 
-    //private List<Sandwich> sandwiches = new ArrayList<Sandwich>();
-//    @Autowired
-//    private DiscoveryClient discoveryClient;
+    // REQUIRES CONSUL
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @Autowired
     private SandwichRepository repository;
@@ -27,60 +28,32 @@ public class SandwichController {
     @Autowired
     private RestTemplate restTemplate;
 
-    //private OrderRepository orepository;
-
-//    public SandwichController(SandwichRepository repository, OrderRepository orepository) {
-//        this.repository = repository;
-//        this.orepository = orepository;
-//    }
-
-
     @RequestMapping("/sandwiches")
     public Iterable<Sandwich> sandwich() {
-        // lijst van sandwiches
-        //return repository.findAll();
         try {
+            // voorlopig hardcoded omdat de user niet wordt doorgegeven naar de server (cookies?)
             Preferences preferences = getPreferences("0496");
-            for (UUID key : preferences.keySet()) {
-                System.out.println(key);
-            }
-            System.out.println("");
-            //TODO: sort allSandwiches by float in preferences
 
             List<Sandwich> allSandwichesList = Lists.newArrayList(repository.findAll());
-            for (Sandwich key : allSandwichesList) {
-                System.out.println(key.getId());
 
-            }
-
+            // indien sommige broodjes niet gerated zijn kan een rating dus null teruggeven
+            // hiervoor zien we dus dat enkel de gerate broodjes worden gesorteerd, de rest komt erna
             List<Sandwich> sortable = new ArrayList();
             List<Sandwich> unsortable = new ArrayList();
             for (Sandwich s : allSandwichesList)
             {
-                System.out.println(preferences.getRatingForSandwich(s.getId()));
                 if (preferences.getRatingForSandwich(s.getId()) != null) sortable.add(s);
                 else unsortable.add(s);
             }
-
-            for(Sandwich s: sortable){
-                System.out.println(s.getPrice());
-            }
-
             Collections.sort(sortable, (e1, e2) -> Float.compare(
                     preferences.getRatingForSandwich(e2.getId()),
                     preferences.getRatingForSandwich(e1.getId())
             ));
             sortable.addAll(unsortable);
-
-            for(Sandwich s: sortable){
-                System.out.println(s.getPrice());
-            }
-
             return sortable;
 
-
+            // als recommendation server niet werkt, neem gewoon de ongesorteerde lijst
         } catch (ServiceUnavailableException e) {
-            System.out.println(e.getMessage());
            return repository.findAll();
         }
     }
@@ -119,22 +92,31 @@ public class SandwichController {
         return repository.findById(id).get();
     }
 
-    // why comment: for testing
+    // LOCAL
+//    @GetMapping("/getpreferences/{emailAddress}")
+//    public Preferences getPreferences(@PathVariable String emailAddress) throws RestClientException, ServiceUnavailableException {
+//        URI service = URI.create("http://localhost:8082/recommendation/recommend/" + emailAddress);
+//        return restTemplate
+//                .getForEntity(service, Preferences.class)
+//                .getBody();
+//    }
+
+    // REQUIRES CONSUL
     @GetMapping("/getpreferences/{emailAddress}")
     public Preferences getPreferences(@PathVariable String emailAddress) throws RestClientException, ServiceUnavailableException {
-        URI service = URI.create("http://localhost:8082" + "/recommendation/recommend/" + emailAddress);//recommendationServiceUrl()
-        System.out.println(service.toString());
-                //.map(s -> s.resolve("/recommend/" + emailAddress))
-                //.orElseThrow(ServiceUnavailableException::new);
+        URI service = recommendationServiceUrl()
+                .map(s -> s.resolve("/recommend/" + emailAddress))
+                .orElseThrow(ServiceUnavailableException::new);
         return restTemplate
                 .getForEntity(service, Preferences.class)
                 .getBody();
     }
 
-//    public Optional<URI> recommendationServiceUrl() {
-//        return discoveryClient.getInstances("recommendation")
-//                .stream()
-//                .map(si -> si.getUri())
-//                .findFirst();
-//    }
+    // REQUIRES CONSUL
+    public Optional<URI> recommendationServiceUrl() {
+        return discoveryClient.getInstances("recommendation")
+                .stream()
+                .map(si -> si.getUri())
+                .findFirst();
+    }
 }

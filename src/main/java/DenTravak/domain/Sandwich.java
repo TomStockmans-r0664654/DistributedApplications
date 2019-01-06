@@ -36,8 +36,6 @@ public class Sandwich {
 
     }
 
-    // getter setter for uuid
-
     public String getName() {
         return name;
     }
